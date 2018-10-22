@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".LabelActivity">
 
 
@@ -15,19 +16,26 @@
 
         <!-- Other components and views -->
             <LinearLayout
+                android:id="@+id/budget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary">
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/budget_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Budget"
                     android:textSize="56sp"
+                    android:textColor="@color/lightWhite"
                     android:gravity="center_horizontal"/>
-
             </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/label_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"/>
 
         <android.support.design.bottomappbar.BottomAppBar
             android:id="@+id/bar"
