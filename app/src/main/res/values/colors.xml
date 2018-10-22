@@ -5,5 +5,5 @@
     <color name="colorAccent">#F9AA33</color>
 
     <!--Theme Colors-->
-    <color name="bgBlack">#33333d</color>
+    <color name="lightWhite">#a2cacaca</color>
 </resources>
