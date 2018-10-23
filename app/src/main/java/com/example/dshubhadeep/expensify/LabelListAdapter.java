@@ -1,6 +1,7 @@
 package com.example.dshubhadeep.expensify;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class LabelListAdapter extends RecyclerView.Adapter<LabelListAdapter.ViewHolder>{
+public class LabelListAdapter extends RecyclerView.Adapter<LabelListAdapter.ViewHolder> {
 
     public List<Label> labelList;
     public Context context;
@@ -34,11 +35,23 @@ public class LabelListAdapter extends RecyclerView.Adapter<LabelListAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        String label_name = labelList.get(position).getName();
+        final View v = holder.mView;
+
+        final String label_name = labelList.get(position).getName();
         String label_budget = labelList.get(position).getBudget();
 
         holder.labelNameText.setText(label_name);
         holder.labelBudgetText.setText(label_budget);
+
+        v.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent i = new Intent(v.getContext(), ExpenseActivity.class);
+                i.putExtra("label", label_name);
+                v.getContext().startActivity(i);
+                return false;
+            }
+        });
 
     }
 
@@ -50,7 +63,7 @@ public class LabelListAdapter extends RecyclerView.Adapter<LabelListAdapter.View
             return labelList.size();
     }
 
-    public class ViewHolder extends  RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
 

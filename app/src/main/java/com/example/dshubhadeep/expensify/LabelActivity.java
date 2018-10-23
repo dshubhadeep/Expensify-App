@@ -81,43 +81,11 @@ public class LabelActivity extends Activity {
         // Firestore DB init.
         db = FirebaseFirestore.getInstance();
 
-        // Adapter
-        labelListAdapter = new LabelListAdapter(getApplicationContext(), labelList);
 
         // RecyclerView
         label_list = findViewById(R.id.label_list);
         label_list.setHasFixedSize(true);
         label_list.setLayoutManager(new LinearLayoutManager(this));
-        label_list.setAdapter(labelListAdapter);
-
-
-        db.collection("labels").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                        int sum = 0;
-
-                        for(QueryDocumentSnapshot doc: task.getResult()) {
-                            String id = doc.getId();
-
-                            String label_name = (String) doc.get("name");
-                            String label_budget = (String) doc.get("budget");
-
-                            sum += Integer.parseInt(label_budget);
-
-                            Label label = new Label();
-                            label.setName(label_name);
-                            label.setBudget(label_budget);
-                            labelList.add(label);
-
-                            Log.d("Label Firestore", label_name + " : " + label_budget);
-                            labelListAdapter.notifyDataSetChanged();
-                        }
-
-                        setBudgetView(sum);
-                    }
-                });
 
 
     }
@@ -130,4 +98,39 @@ public class LabelActivity extends Activity {
 
     }
 
+    @Override
+    protected void onResume() {
+        db.collection("labels").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        int sum = 0;
+
+                        labelList = new ArrayList<>();
+                        // Adapter
+                        labelListAdapter = new LabelListAdapter(getApplicationContext(), labelList);
+                        label_list.setAdapter(labelListAdapter);
+
+
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            String id = doc.getId();
+
+                            String label_name = (String) doc.get("name");
+                            String label_budget = (String) doc.get("budget");
+
+                            sum += Integer.parseInt(label_budget);
+
+                            Label label = doc.toObject(Label.class);
+                            labelList.add(label);
+
+                            Log.d("Label Firestore", label_name + " : " + label_budget);
+                            labelListAdapter.notifyDataSetChanged();
+                        }
+
+                        setBudgetView(sum);
+                    }
+                });
+        super.onResume();
+    }
 }
