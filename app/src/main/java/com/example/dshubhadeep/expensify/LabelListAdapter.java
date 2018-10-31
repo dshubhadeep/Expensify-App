@@ -43,13 +43,12 @@ public class LabelListAdapter extends RecyclerView.Adapter<LabelListAdapter.View
         holder.labelNameText.setText(label_name);
         holder.labelBudgetText.setText(label_budget);
 
-        v.setOnLongClickListener(new View.OnLongClickListener() {
+        v.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
+            public void onClick(View view) {
                 Intent i = new Intent(v.getContext(), ExpenseActivity.class);
                 i.putExtra("label", label_name);
                 v.getContext().startActivity(i);
-                return false;
             }
         });
 

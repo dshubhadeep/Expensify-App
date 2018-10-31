@@ -3,13 +3,19 @@ package com.example.dshubhadeep.expensify;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -25,7 +31,7 @@ import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-public class LabelActivity extends Activity {
+public class LabelActivity extends AppCompatActivity {
 
     private TextView budgetTextView;
 
@@ -64,6 +70,13 @@ public class LabelActivity extends Activity {
         });
 
         // Fab listener
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), AddLabelActivity.class);
+                startActivity(i);
+            }
+        });
 
     }
 
@@ -94,7 +107,16 @@ public class LabelActivity extends Activity {
 
         String budget = sharedPreferences.getString("budget", "0");
         String budgetLeft = s + "/" + budget;
+        int sumLength = Integer.toString(s).length();
         budgetTextView.setText(budgetLeft);
+
+        Spannable wordToSpan = new SpannableString(budgetLeft);
+
+        int color = ContextCompat.getColor(getApplicationContext(), R.color.lightWhite);
+
+        wordToSpan.setSpan(new ForegroundColorSpan(color), 0, sumLength, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        budgetTextView.setText(wordToSpan);
 
     }
 

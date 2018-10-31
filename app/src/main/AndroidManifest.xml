@@ -21,7 +21,9 @@
         <activity
             android:name=".LabelActivity"
             android:label="@string/title_activity_label" />
-        <activity android:name=".ExpenseActivity"></activity>
+        <activity android:name=".ExpenseActivity" />
+        <activity android:name=".AddLabelActivity" />
+        <activity android:name=".AddExpenseActivity"></activity>
     </application>
 
 </manifest>
