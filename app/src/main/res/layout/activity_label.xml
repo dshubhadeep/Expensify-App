@@ -15,7 +15,6 @@
 
         <!-- Other components and views -->
 
-
         <include layout="@layout/content_label" />
 
 

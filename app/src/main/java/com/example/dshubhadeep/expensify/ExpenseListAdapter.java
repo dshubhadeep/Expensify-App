@@ -9,7 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.ViewHolder> {
 
@@ -37,12 +41,34 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
 
         final View v = holder.mView;
 
-        String expense_name = expenseList.get(position).getName();
-        String expense_amount = expenseList.get(position).getAmount();
+        Currency currency = Currency.getInstance(Locale.getDefault());
+        String symbol = currency.getSymbol();
+
+        final String expense_name = expenseList.get(position).getName();
+        final String expense_amount = expenseList.get(position).getAmount();
+        final String expense_date = expenseList.get(position).getDate();
+
+        String prev_expense_date = null;
+        if (position > 0) {
+            prev_expense_date = expenseList.get(position - 1).getDate();
+        }
+
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+        String[] date = expense_date.split("-");
+        String month = months[Integer.parseInt(date[1]) - 1];
+
+        if ((prev_expense_date != null &&
+                !prev_expense_date.equalsIgnoreCase(expense_date)) || position == 0) {
+            holder.expenseDateText.setText(new StringBuilder().append(date[0]).append("\n").append(month));
+        }
 
         holder.expenseNameText.setText(expense_name);
-        holder.expenseAmountText.setText(expense_amount);
-
+        holder.expenseAmountText.setText(new StringBuilder()
+                .append(symbol)
+                .append(" ")
+                .append(expense_amount));
 
     }
 
@@ -60,6 +86,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
 
         public TextView expenseNameText;
         public TextView expenseAmountText;
+        public TextView expenseDateText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -67,6 +94,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
 
             expenseNameText = mView.findViewById(R.id.expense_name_list_text);
             expenseAmountText = mView.findViewById(R.id.expense_amount_list_text);
+            expenseDateText = mView.findViewById(R.id.expense_date_list_text);
 
         }
     }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:showIn="@layout/activity_search"
+    android:background="@color/colorPrimary">
+
+    <android.support.design.widget.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/from_date_edit_text"
+            style="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:textColorHint="@color/lightWhite"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/lightWhite"
+            android:hint="From Date"
+            android:inputType="text"
+            android:textStyle="bold"
+            android:maxLines="1" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/to_date_edit_text"
+            style="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:textColorHint="@color/lightWhite"
+            android:background="@color/colorPrimary"
+            android:hint="To Date"
+            android:inputType="text"
+            android:textColor="@color/lightWhite"
+            android:textStyle="bold"
+            android:maxLines="1" />
+
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>

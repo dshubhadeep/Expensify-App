@@ -59,11 +59,11 @@ public class AddLabelActivity extends AppCompatActivity {
                                     DocumentReference doc = task.getResult();
 
                                     Log.d(TAG, "onComplete: " + doc.getId());
+                                    finish();
 
                                 }
                             });
 
-                    finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
                 }

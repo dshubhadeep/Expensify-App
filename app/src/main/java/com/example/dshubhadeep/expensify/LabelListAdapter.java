@@ -70,7 +70,7 @@ public class LabelListAdapter extends RecyclerView.Adapter<LabelListAdapter.View
             int amount = labelWithExpenseList.get(label_name);
             budget_left = amount + "/" + label_budget;
         } else {
-            budget_left = label_budget;
+            budget_left = "0/" + label_budget;
         }
 
         holder.labelNameText.setText(label_name);

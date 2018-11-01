@@ -13,12 +13,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +32,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -44,6 +50,9 @@ public class LabelActivity extends AppCompatActivity {
     private LabelListAdapter labelListAdapter;
 
     FirebaseFirestore db;
+
+    LinearLayout errorLayout;
+    TextView errorText;
 
     SharedPreferences sharedPreferences;
 
@@ -79,6 +88,24 @@ public class LabelActivity extends AppCompatActivity {
             }
         });
 
+        // Bottombar
+        bar.replaceMenu(R.menu.menu_main);
+        bar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+
+            Menu menu = bar.getMenu();
+
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                if (menuItem == menu.findItem(R.id.app_bar_search)) {
+                    Intent i = new Intent(LabelActivity.this, SearchActivity.class);
+                    startActivity(i);
+                }
+
+                return false;
+            }
+        });
+
     }
 
     private void initVars() {
@@ -94,8 +121,12 @@ public class LabelActivity extends AppCompatActivity {
 
         labelList = new ArrayList<>();
 
+        errorText = findViewById(R.id.error_msg);
+
         // Firestore DB init.
         db = FirebaseFirestore.getInstance();
+
+        errorLayout = findViewById(R.id.error_layout);
 
 
         // RecyclerView
@@ -135,7 +166,7 @@ public class LabelActivity extends AppCompatActivity {
                         int sum = 0;
                         expenseList = new ArrayList<>();
 
-                        for(QueryDocumentSnapshot doc: task.getResult()) {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
                             Expense expense = doc.toObject(Expense.class);
                             String amount = (String) doc.get("Amount");
                             sum += Integer.parseInt(amount);
@@ -148,6 +179,7 @@ public class LabelActivity extends AppCompatActivity {
                     }
                 });
 
+
         db.collection("labels")
                 .orderBy("name")
                 .get()
@@ -155,7 +187,23 @@ public class LabelActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
+                        // Generate Hashmap
+                        HashMap<String, Integer> labelWithExpenseList = new HashMap<>();
+                        for (Expense e : expenseList) {
+                            String label = e.getLabel();
+                            int amount = Integer.parseInt(e.getAmount());
+
+                            if (!labelWithExpenseList.containsKey(label)) {
+                                labelWithExpenseList.put(label, amount);
+                            } else {
+                                int newAmount = labelWithExpenseList.get(label) + amount;
+                                labelWithExpenseList.put(label, newAmount);
+                            }
+
+                        }
+
                         labelList = new ArrayList<>();
+                        StringBuilder errorMsg = new StringBuilder();
                         Log.d(TAG, "onComplete: Labels" + expenseList.toString());
                         // Adapter
                         labelListAdapter = new LabelListAdapter(getApplicationContext(), labelList, expenseList);
@@ -168,11 +216,26 @@ public class LabelActivity extends AppCompatActivity {
                             String label_name = (String) doc.get("name");
                             String label_budget = (String) doc.get("budget");
 
+                            if (labelWithExpenseList.containsKey(label_name)) {
+                                int amt = labelWithExpenseList.get(label_name);
+                                if (amt > Integer.parseInt(label_budget)) {
+                                    errorMsg.append(label_name + " has exceeded budget.\n");
+                                    Log.d("ErrorChecker", "onComplete: " + errorMsg);
+                                }
+                            }
+
+
                             Label label = doc.toObject(Label.class);
                             labelList.add(label);
 
                             Log.d("Label Firestore", label_name + " : " + label_budget);
                             labelListAdapter.notifyDataSetChanged();
+                        }
+
+                        Log.d("ErrorChecker", "onComplete: " + errorMsg);
+                        if (errorMsg.length() > 0) {
+                            errorText.setText(errorMsg);
+                            errorLayout.setVisibility(View.VISIBLE);
                         }
 
                     }

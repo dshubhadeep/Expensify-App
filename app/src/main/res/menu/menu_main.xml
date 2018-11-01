@@ -2,18 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/app_bar_fav"
-        android:icon="@drawable/ic_add_24"
-        android:title="Search"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/app_bar_search"
-        android:icon="@drawable/ic_add_24"
-        android:title="Label"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/app_bar_settings"
-        android:title="Settings"
-        app:showAsAction="never"/>
+        android:title="Search"
+        android:icon="@drawable/ic_search_24"
+        app:showAsAction="always"/>
 </menu>

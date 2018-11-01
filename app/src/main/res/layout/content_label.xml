@@ -26,6 +26,10 @@
 
     </LinearLayout>
 
+    <include layout="@layout/error_content"
+        android:id="@+id/error_layout"
+        android:visibility="gone"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/label_list"
         android:layout_width="match_parent"

@@ -4,29 +4,55 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="4dp"
-    android:layout_marginTop="8dp"
     android:layout_marginEnd="4dp"
     android:background="?android:attr/selectableItemBackground"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:paddingStart="8dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp">
 
-
     <TextView
-        android:id="@+id/expense_name_list_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:id="@+id/expense_date_list_text"
+        android:layout_width="56dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical"
+        android:textAlignment="center"
+        android:textSize="12sp"
         android:textStyle="bold"
-        tools:text="Food" />
+        tools:text="10/10"
+        android:layout_marginRight="8dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/expense_name_list_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="Food"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="2dp"/>
 
 
-    <TextView
-        android:id="@+id/expense_amount_list_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="100" />
+        <TextView
+            android:id="@+id/expense_amount_list_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/expense_name_list_text"
+
+            tools:text="100" />
+
+    </RelativeLayout>
+
+
+
 
 
 </LinearLayout>
