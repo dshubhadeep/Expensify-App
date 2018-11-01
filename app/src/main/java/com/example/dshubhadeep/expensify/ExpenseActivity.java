@@ -24,7 +24,7 @@ import java.util.List;
 public class ExpenseActivity extends AppCompatActivity {
 
     private static final String TAG = "Firestore";
-    private TextView expenseHeader;
+    private TextView expenseHeader, noExpenseText;
     private String label;
 
     private RecyclerView expense_list;
@@ -64,6 +64,7 @@ public class ExpenseActivity extends AppCompatActivity {
     private void initVars() {
 
         expenseHeader = findViewById(R.id.expense_header);
+        noExpenseText = findViewById(R.id.no_expenses_view);
         Intent i = getIntent();
         label = i.getStringExtra("label");
         expenseHeader.setText(label);
@@ -102,6 +103,12 @@ public class ExpenseActivity extends AppCompatActivity {
 
                             expenseListAdapter.notifyDataSetChanged();
                             Log.d(TAG, "onComplete: " + doc.getId());
+                        }
+
+                        if  (expenseList.size() > 0 ) {
+                            noExpenseText.setVisibility(View.GONE);
+                        } else {
+                            noExpenseText.setVisibility(View.VISIBLE);
                         }
 
                     }

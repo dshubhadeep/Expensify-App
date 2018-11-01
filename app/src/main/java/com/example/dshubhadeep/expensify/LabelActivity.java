@@ -40,6 +40,7 @@ public class LabelActivity extends AppCompatActivity {
 
     private RecyclerView label_list;
     private List<Label> labelList;
+    private List<Expense> expenseList;
     private LabelListAdapter labelListAdapter;
 
     FirebaseFirestore db;
@@ -88,6 +89,8 @@ public class LabelActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("Budget", Context.MODE_PRIVATE);
 
+        budgetTextView.setText("Loading...");
+
 
         labelList = new ArrayList<>();
 
@@ -122,16 +125,40 @@ public class LabelActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        db.collection("labels").get()
+
+        // Get expenses
+        db.collection("expenses").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                         int sum = 0;
+                        expenseList = new ArrayList<>();
+
+                        for(QueryDocumentSnapshot doc: task.getResult()) {
+                            Expense expense = doc.toObject(Expense.class);
+                            String amount = (String) doc.get("Amount");
+                            sum += Integer.parseInt(amount);
+
+                            Log.d("ExpFire", "onComplete Expense: " + expense.getLabel());
+                            expenseList.add(expense);
+                        }
+
+                        setBudgetView(sum);
+                    }
+                });
+
+        db.collection("labels")
+                .orderBy("name")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                         labelList = new ArrayList<>();
+                        Log.d(TAG, "onComplete: Labels" + expenseList.toString());
                         // Adapter
-                        labelListAdapter = new LabelListAdapter(getApplicationContext(), labelList);
+                        labelListAdapter = new LabelListAdapter(getApplicationContext(), labelList, expenseList);
                         label_list.setAdapter(labelListAdapter);
 
 
@@ -141,8 +168,6 @@ public class LabelActivity extends AppCompatActivity {
                             String label_name = (String) doc.get("name");
                             String label_budget = (String) doc.get("budget");
 
-                            sum += Integer.parseInt(label_budget);
-
                             Label label = doc.toObject(Label.class);
                             labelList.add(label);
 
@@ -150,7 +175,6 @@ public class LabelActivity extends AppCompatActivity {
                             labelListAdapter.notifyDataSetChanged();
                         }
 
-                        setBudgetView(sum);
                     }
                 });
         super.onResume();
