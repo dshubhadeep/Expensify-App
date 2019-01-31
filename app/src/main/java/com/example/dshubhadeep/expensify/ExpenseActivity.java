@@ -100,6 +100,7 @@ public class ExpenseActivity extends AppCompatActivity {
                             Expense expense = doc.toObject(Expense.class);
 
                             expenseList.add(expense);
+                            expense.setId(doc.getId());
 
                             expenseListAdapter.notifyDataSetChanged();
                             Log.d(TAG, "onComplete: " + doc.getId());

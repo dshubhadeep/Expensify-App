@@ -48,7 +48,7 @@ public class BudgetActivity extends AppCompatActivity {
                 Intent i = new Intent(BudgetActivity.this, LabelActivity.class);
                 startActivity(i);
 
-//                finish();
+                finish();
             }
         });
 

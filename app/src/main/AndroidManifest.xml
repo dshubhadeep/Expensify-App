@@ -25,6 +25,7 @@
         <activity android:name=".AddLabelActivity" />
         <activity android:name=".AddExpenseActivity" />
         <activity android:name=".SearchActivity" />
+        <activity android:name=".EditExpenseActivity"></activity>
     </application>
 
 </manifest>

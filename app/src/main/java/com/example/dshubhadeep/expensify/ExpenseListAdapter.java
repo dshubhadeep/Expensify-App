@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.Currency;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,6 +46,8 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         final String expense_name = expenseList.get(position).getName();
         final String expense_amount = expenseList.get(position).getAmount();
         final String expense_date = expenseList.get(position).getDate();
+        final String expense_id = expenseList.get(position).getId();
+        final String expense_label = expenseList.get(position).getLabel();
 
         String prev_expense_date = null;
         if (position > 0) {
@@ -69,6 +70,26 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
                 .append(symbol)
                 .append(" ")
                 .append(expense_amount));
+
+        v.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent i = new Intent(context, EditExpenseActivity.class);
+
+                // Create new serializable hashmap
+                HashMap<String,String> expenseHashMap = new HashMap<>();
+                expenseHashMap.put("expense_id", expense_id);
+                expenseHashMap.put("expense_name", expense_name);
+                expenseHashMap.put("expense_label", expense_label);
+                expenseHashMap.put("expense_amount", expense_amount);
+                expenseHashMap.put("expense_date", expense_date);
+
+                i.putExtra("expense_map", expenseHashMap);
+                v.getContext().startActivity(i);
+
+                return false;
+            }
+        });
 
     }
 
