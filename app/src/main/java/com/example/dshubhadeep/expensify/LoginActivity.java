@@ -1,12 +1,11 @@
 package com.example.dshubhadeep.expensify;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -16,6 +15,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,6 +31,10 @@ public class LoginActivity extends AppCompatActivity {
     private MaterialButton registerButton, loginButton;
 
     private FirebaseAuth mAuth;
+
+    private FirebaseFirestore db;
+
+    private CollectionReference userRef;
 
     @Override
     public void onStart() {
@@ -58,8 +67,10 @@ public class LoginActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.register_button);
         loginButton = findViewById(R.id.login_button);
 
-        // Firebase auth
+        // Firebase stuff
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        userRef = db.collection("users");
     }
 
     private void setClickListeners() {
@@ -116,13 +127,10 @@ public class LoginActivity extends AppCompatActivity {
                                             "User signed in",
                                             Toast.LENGTH_SHORT).show();
 
-                                    // Get details of current user
-
                                     Intent i = new Intent(LoginActivity.this, BudgetActivity.class);
                                     startActivity(i);
 
                                     finish();
-
                                 } else {
                                     Toast.makeText(LoginActivity.this,
                                             "You couldn't sign in. You should give up.",

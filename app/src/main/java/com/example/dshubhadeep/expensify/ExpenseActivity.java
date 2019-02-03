@@ -1,11 +1,10 @@
 package com.example.dshubhadeep.expensify;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +13,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -33,7 +34,9 @@ public class ExpenseActivity extends AppCompatActivity {
 
     private FloatingActionButton fab;
 
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private CollectionReference expensesRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,12 @@ public class ExpenseActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        mAuth = FirebaseAuth.getInstance();
+
+        String uid = mAuth.getCurrentUser().getUid();
+
+        expensesRef = db.collection("users").document(uid).collection("expenses");
+
         expenseList = new ArrayList<>();
 
         // RecyclerView
@@ -85,7 +94,7 @@ public class ExpenseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
 
-        db.collection("expenses")
+        expensesRef
                 .whereEqualTo("Label", label)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

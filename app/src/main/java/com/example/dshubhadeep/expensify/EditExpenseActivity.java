@@ -2,19 +2,20 @@ package com.example.dshubhadeep.expensify;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
@@ -30,6 +31,9 @@ public class EditExpenseActivity extends AppCompatActivity {
     private Button editExpenseButton;
 
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+
+    private DocumentReference expensesRef;
 
     private String expense_id;
 
@@ -75,6 +79,13 @@ public class EditExpenseActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        mAuth = FirebaseAuth.getInstance();
+
+        String uid = mAuth.getCurrentUser().getUid();
+
+        expensesRef = db.collection("users").document(uid)
+                .collection("expenses").document(expenseHashMap.get("expense_name"));
+
         calendar = Calendar.getInstance();
 
         dateDialog = new DatePickerDialog.OnDateSetListener() {
@@ -104,7 +115,7 @@ public class EditExpenseActivity extends AppCompatActivity {
                 Log.d("EditExpenseDebug", "onClick: Name - " + name + " " + amount + " Id : " + expense_id);
 
 
-                db.collection("expenses").document(expense_id)
+                expensesRef
                         .update(
                                 "Name", name,
                                 "Amount", amount,

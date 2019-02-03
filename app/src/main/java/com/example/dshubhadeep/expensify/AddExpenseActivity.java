@@ -5,17 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
@@ -36,7 +39,10 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     FirebaseFirestore db;
 
-    Context context;
+    private FirebaseAuth mAuth;
+    private CollectionReference expensesRef;
+
+    private Context context;
 
 
     @Override
@@ -83,11 +89,12 @@ public class AddExpenseActivity extends AppCompatActivity {
 
                     Toast.makeText(context, "Added" , Toast.LENGTH_SHORT).show();
 
-                    db.collection("expenses")
-                            .add(expense)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    expensesRef
+                            .document(name)
+                            .set(expense)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
-                                public void onSuccess(DocumentReference documentReference) {
+                                public void onComplete(@NonNull Task<Void> task) {
                                     Toast.makeText(getApplicationContext(),
                                             "Added", Toast.LENGTH_SHORT)
                                             .show();
@@ -147,6 +154,11 @@ public class AddExpenseActivity extends AppCompatActivity {
         addExpenseBtn = findViewById(R.id.add_expense_button);
 
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+        String uid = mAuth.getCurrentUser().getUid();
+
+        expensesRef= db.collection("users").document(uid).collection("expenses");
 
         Intent i = getIntent();
         label = i.getStringExtra("label");
