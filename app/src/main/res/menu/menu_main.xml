@@ -4,6 +4,16 @@
     <item
         android:id="@+id/app_bar_search"
         android:title="Search"
-        android:icon="@drawable/ic_search_24"
+        android:icon="@drawable/ic_search"
+        app:iconTint="@android:color/white"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/app_bar_logout"
+        android:title="Log out"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_log_out"
+        app:iconTint="@android:color/white"
+        />
+
 </menu>

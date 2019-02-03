@@ -11,12 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".BudgetActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".BudgetActivity">
+
         </activity>
         <activity
             android:name=".LabelActivity"
@@ -25,7 +28,7 @@
         <activity android:name=".AddLabelActivity" />
         <activity android:name=".AddExpenseActivity" />
         <activity android:name=".SearchActivity" />
-        <activity android:name=".EditExpenseActivity"></activity>
+        <activity android:name=".EditExpenseActivity" />
     </application>
 
 </manifest>

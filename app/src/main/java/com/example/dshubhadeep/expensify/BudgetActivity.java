@@ -6,9 +6,13 @@ import android.content.SharedPreferences;
 import android.support.design.button.MaterialButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class BudgetActivity extends AppCompatActivity {
 
@@ -31,6 +35,8 @@ public class BudgetActivity extends AppCompatActivity {
         setBudgetBtn = findViewById(R.id.set_budget_button);
 
         sharedPreferences = getSharedPreferences("Budget", Context.MODE_PRIVATE);
+
+//        Log.d("FireBaseAuth", "initVars: UID" + uid);
     }
 
     private void setListeners() {
@@ -39,6 +45,7 @@ public class BudgetActivity extends AppCompatActivity {
         setBudgetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String budget = budgetEditText.getText().toString();
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();

@@ -27,6 +27,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -100,6 +102,12 @@ public class LabelActivity extends AppCompatActivity {
                 if (menuItem == menu.findItem(R.id.app_bar_search)) {
                     Intent i = new Intent(LabelActivity.this, SearchActivity.class);
                     startActivity(i);
+                } else if (menuItem == menu.findItem(R.id.app_bar_logout)) {
+
+                    FirebaseAuth.getInstance().signOut();
+                    Intent i = new Intent(LabelActivity.this, LoginActivity.class);
+                    startActivity(i);
+
                 }
 
                 return false;
