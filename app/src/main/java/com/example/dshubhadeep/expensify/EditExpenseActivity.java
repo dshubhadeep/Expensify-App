@@ -12,8 +12,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,7 +30,7 @@ public class EditExpenseActivity extends AppCompatActivity {
             expenseDateEditText,
             expenseAmountEditText;
 
-    private Button editExpenseButton;
+    private Button editExpenseButton, deleteExpenseButton;
 
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
@@ -76,6 +78,7 @@ public class EditExpenseActivity extends AppCompatActivity {
 
         // Map button
         editExpenseButton = findViewById(R.id.edit_expense_button);
+        deleteExpenseButton = findViewById(R.id.delete_expense_button);
 
         db = FirebaseFirestore.getInstance();
 
@@ -135,6 +138,28 @@ public class EditExpenseActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Something went horribly wrong.", Toast.LENGTH_SHORT).show();
                             }
                         });
+            }
+        });
+
+        // Delete expense button
+        deleteExpenseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                expensesRef.delete()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(EditExpenseActivity.this,
+                                            "Expense deleted successfully",
+                                            Toast.LENGTH_SHORT).show();
+
+                                    finish();
+                                }
+                            }
+                        });
+
             }
         });
 

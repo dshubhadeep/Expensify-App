@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".EditExpenseActivity"
     android:orientation="vertical"
     android:padding="8dp">
@@ -94,13 +95,40 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.button.MaterialButton
-        android:id="@+id/edit_expense_button"
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Edit"
-        android:textStyle="bold" />
+        android:layout_marginTop="12dp"
+        android:gravity="center_horizontal">
+
+        <android.support.design.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:id="@+id/delete_expense_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Delete"
+            app:icon="@drawable/ic_delete"
+            app:iconPadding="8dp"
+            android:textStyle="bold" />
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/edit_expense_button"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Edit"
+            android:textStyle="bold"
+            android:layout_marginStart="48dp"
+            app:icon="@drawable/ic_edit"
+            app:iconPadding="8dp"
+            android:layout_toEndOf="@+id/delete_expense_button"/>
+
+    </RelativeLayout>
+
+
 
 
 </LinearLayout>

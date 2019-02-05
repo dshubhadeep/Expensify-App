@@ -8,6 +8,7 @@ import android.support.design.button.MaterialButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class BudgetActivity extends AppCompatActivity {
 
@@ -43,14 +44,28 @@ public class BudgetActivity extends AppCompatActivity {
 
                 String budget = budgetEditText.getText().toString();
 
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("budget", budget);
-                editor.apply();
+                budget = budget.length() == 0 ? "0" : budget;
 
-                Intent i = new Intent(BudgetActivity.this, LabelActivity.class);
-                startActivity(i);
+                if (Integer.parseInt(budget) == 0) {
 
-                finish();
+                    Toast.makeText(BudgetActivity.this,
+                            "Enter a valid budget",
+                            Toast.LENGTH_SHORT).show();
+
+                }  else {
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("budget", budget);
+                    editor.apply();
+
+                    Intent i = new Intent(BudgetActivity.this, LabelActivity.class);
+                    startActivity(i);
+
+                    finish();
+
+                }
+
+
             }
         });
 
